@@ -1,4 +1,4 @@
-package fp.`in`.kotlin.state
+package fp.kotlin.state
 
 import arrow.core.Tuple2
 import arrow.mtl.State

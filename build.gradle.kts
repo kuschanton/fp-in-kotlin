@@ -5,6 +5,10 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds
  */
 
+val junitVersion = "5.6.1"
+val arrowVersion = "0.10.4"
+val kotlinTestVersion = "2.0.7"
+
 repositories {
     mavenCentral()
 }
@@ -13,10 +17,26 @@ plugins {
     kotlin("jvm") version "1.3.71"
 }
 
-
 apply(plugin = "kotlin")
+
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("io.arrow-kt:arrow-mtl:0.10.4")
+    implementation("io.arrow-kt:arrow-mtl:$arrowVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testImplementation("io.kotlintest:kotlintest:$kotlinTestVersion")
 }
