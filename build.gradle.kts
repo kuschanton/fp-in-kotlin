@@ -7,7 +7,8 @@
 
 val junitVersion = "5.6.1"
 val arrowVersion = "0.10.4"
-val kotlinTestVersion = "2.0.7"
+val kotlinVersion = "1.3.71"
+val kotlinTestVersion = "3.4.2"
 
 repositories {
     mavenCentral()
@@ -15,6 +16,7 @@ repositories {
 
 plugins {
     kotlin("jvm") version "1.3.71"
+    id("io.kotlintest") version "1.1.1"
 }
 
 apply(plugin = "kotlin")
@@ -26,17 +28,21 @@ tasks {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("io.arrow-kt:arrow-mtl:$arrowVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testImplementation("io.kotlintest:kotlintest:$kotlinTestVersion")
+    testImplementation("io.kotlintest:kotlintest-core:$kotlinTestVersion")
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:$kotlinTestVersion")
 }
