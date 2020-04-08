@@ -12,14 +12,18 @@ val kotlinTestVersion = "3.4.2"
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
 
 plugins {
     kotlin("jvm") version "1.3.71"
+    kotlin("kapt") version "1.3.71"
     id("io.kotlintest") version "1.1.1"
 }
 
 apply(plugin = "kotlin")
+apply(plugin = "kotlin-kapt")
 
 tasks {
     compileKotlin {
@@ -36,10 +40,19 @@ tasks {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        resolutionStrategy.eachDependency {
+            when (requested.group) {
+                "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
+            }
+        }
+    }
+}
+
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("io.arrow-kt:arrow-mtl:$arrowVersion")
+    kapt("io.arrow-kt:arrow-meta:$arrowVersion")
+    compile("io.arrow-kt:arrow-mtl:$arrowVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
