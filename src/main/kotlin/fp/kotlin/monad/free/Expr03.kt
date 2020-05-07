@@ -14,8 +14,7 @@ sealed class FreeK<F : Kind<F, A>, A> : FreeKOf<F, A> {
 }
 
 data class ReturnK<F : Kind<F, A>, A>(val a: A) : FreeK<F, A>()
-// TODO: Type of parameter s here is wrong
-data class SuspendK<F : Kind<F, A>, A>(val s: FreeKOf<F, A>) : FreeK<F, A>()
+data class SuspendK<F : Kind<F, A>, A>(val s: FreeK<F, A>) : FreeK<F, A>()
 
 @higherkind
 sealed class BoolAlg<T> : BoolAlgOf<T>
